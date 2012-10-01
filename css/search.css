@@ -1,0 +1,74 @@
+a#search::before {
+	content:attr(class);
+}
+
+#search-info {
+	font-style:italic;
+}
+
+#search li { margin:0; padding:0; }
+#search mark {
+	color:#000;
+	background:#ddd; background:rgba(0,0,0,0.15);
+	line-height:1;
+	outline:1px solid #999;
+	outline-color:rgba(0,0,0,0.5);
+}
+#search a { color:#333; }
+#search a.selected,
+#search a.selected mark { color:HighlightText; }
+
+#search .selection-list { padding-bottom:0; }
+#search-padding { height:3em; }
+#search h3 { font-size:1em; margin:0.5em 0 0 0; }
+#search .search-current-db-text { font-style:italic; }
+
+#search-emptyquery,
+#search-noresults,
+#search-current-noresults-dbs,
+#search-current-noresults-indb,
+#search-current-results-dbs,
+#search-current-results-indb,
+#search-current-results,
+#search-other-noresults-dbs,
+#search-other-noresults-indb,
+#search-other-results-dbs,
+#search-other-results-indb,
+#search-other-results { display:none; }
+
+#search.emptyquery
+	#search-emptyquery,
+#search.current-noresults.other-noresults
+	#search-noresults,
+
+#search.current-noresults.other-results.current-is-dbs
+	#search-current-noresults-dbs,
+#search.current-noresults.other-results.current-is-indb
+	#search-current-noresults-indb,
+#search.current-results.current-is-dbs
+	#search-current-results-dbs,
+#search.current-results.current-is-indb
+	#search-current-results-indb,
+#search.current-results
+	#search-current-results,
+
+#search.current-results.other-noresults.current-is-dbs
+	#search-other-noresults-dbs,
+#search.current-results.other-noresults.current-is-indb
+	#search-other-noresults-indb,
+#search.other-results.current-is-dbs
+	#search-other-results-dbs,
+#search.other-results.current-is-indb
+	#search-other-results-indb,
+#search.other-results
+	#search-other-results { display:block; }
+
+#search-emptyquery,
+#search-noresults,
+#search-current-noresults-dbs p,
+#search-current-noresults-indb p,
+#search-other-noresults-dbs p,
+#search-other-noresults-indb p { font-style:italic; color:#333; margin:0 0 1em 0; }
+
+#search-emptyquery,
+#search-noresults { margin:1em 0; }

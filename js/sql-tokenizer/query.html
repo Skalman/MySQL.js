@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>SQL Tokenizer</title>
+	<script src="sql-tokenizer.js"></script>
+	<script src="sql-query.js"></script>
+	<style>
+		html, body { height:100%; margin:0; padding:0; background:#eee; }
+		#sql, #result {
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			margin:0; float:left; }
+		#sql { width:50%; height:100%; }
+		td, th { text-align:left; padding:0 0.5em; }
+	</style>
+</head>
+<body>
+	<textarea id="sql" spellcheck="false" placeholder="Write some SQL here to test">SELECT * FROM mytable</textarea>
+	<div id="result"></div>
+	<script>
+		var timeout, last_value,
+			sql = document.getElementById("sql"),
+			result = document.getElementById("result");
+
+		function one_line(str) {
+			return str.replace(/\n/g, "\\n").replace(/\t/g, "\\t");
+		}
+		function html(str) {
+			return (str+"").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+		}
+		function query() {
+			if (sql.value !== last_value) {
+				last_value = sql.value;
+				var i, text,
+					q = Sql_query(last_value);
+				
+				text = "<h2>get_limit()</h2><pre><code>" + JSON.stringify(q.get_limit()) + "</code></pre>"
+					+ "<h2>update_limit(30)</h2><pre><code>" + html(q.update_limit(30)) + "</code></pre>"
+					+ "<h2>update_limit(60, 30)</h2><pre><code>" + html(q.update_limit(60, 30)) + "</code></pre>"
+//					+ "<h2>uc_query()</h2><pre><code>" + html(q.uc_query()) + "</code></pre>"
+					+ "<h2>count_query()</h2><pre><code>" + html(q.count_query()) + "</code></pre>";
+				result.innerHTML = text;
+				//console.log(q);
+			}
+		}
+
+		sql.addEventListener("blur", query, false);
+		sql.addEventListener("click", query, false);
+		sql.addEventListener("focus", query, false);
+		sql.addEventListener("change", query, false);
+		sql.addEventListener("keyup", function () {
+			clearTimeout(timeout);
+			setTimeout(query, 100);
+		}, false);
+		query();
+	</script>
+</body>
+</html>

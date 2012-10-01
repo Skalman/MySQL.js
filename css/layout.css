@@ -1,0 +1,107 @@
+* {
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+html, body, .page, .column, .column-content {
+	height:100%;
+	margin:0; padding:0;
+}
+
+#enable-javascript {
+	position:relative; top:3em;
+	margin:0;
+}
+
+#connect-form {
+	margin:0 auto;
+	padding:3em 0;
+	width:25em;
+}
+	#connect-form input { width:100%; }
+
+body, .page { position:relative; }
+
+.column {
+	position:relative;
+	/*border-bottom:3em solid transparent;*/
+}
+	.column h2 {
+		position:relative;
+		z-index:1;
+		height:1.8em;
+		margin:0 0 -1.8em 0.4em;
+		padding:0.2em 0 0 0;
+		font-size:1em;
+		line-height:1.4;
+		border-bottom:0.2em solid #ddd;
+	/*	position:fixed; width:100%; top:0.2em;*/
+	}
+	.column-content {
+		position:relative;
+		border-top:2.2em solid transparent;
+		padding:0 0 0 0.4em;
+		overflow-x:hidden; overflow-y:auto;
+		outline:none;
+	}
+		.column .selection-list,
+		#result #result-data {
+			padding-bottom:3em;
+		}
+
+#databases, #tables, #search {
+	position:fixed; top:0;
+	width:12em;
+	background:#fff;
+}
+#tables { left:12em; }
+#search {
+	z-index:1;
+	width:24em;
+}
+	#search-input {
+		width:100%;
+		margin:0.2em 0;
+	}
+	
+#result { margin-left:24em; }
+	#result .column-content {
+		padding-right:0.4em;
+		overflow-x:auto; overflow-y:scroll;
+	}
+
+#main-nav {
+	position:fixed; right:0; top:0;
+	z-index:1;
+	padding:0.2em 0.5em;
+	background:#fff;
+}
+
+#command {
+	display:none;
+	position:fixed; bottom:0;
+	width:100%; height:3em;
+	padding:0.5em;
+	background:#fff;
+}
+	#command input { width:100%; height:2em; }
+
+#shortcut-info {
+	position:fixed; left:0; top:0;
+	z-index:1000;
+	width:100%; height:100%;
+	border:3em solid rgba(0, 0, 0, 0.5);
+}
+	#shortcut-info div {
+		position:relative;
+		width:100%; height:100%;
+		margin:0; padding:2em;
+		border:1px solid highlight;
+		overflow:auto;
+		color:#eee; background:rgba(0, 0, 0, 0.9);
+	}
+	#shortcut-info table { padding:2em; }
+	#shortcut-info td { padding:0.2em 1em; }
+	#shortcut-info-close {
+		float:right;
+	}

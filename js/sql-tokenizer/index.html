@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>SQL Tokenizer</title>
+	<script src="sql-tokenizer.js"></script>
+	<style>
+		html, body { height:100%; margin:0; padding:0; background:#eee; }
+		#sql, #result {
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+			margin:0; float:left; }
+		#sql { width:50%; height:100%; }
+		#result { max-width:50%; }
+		td, th { text-align:left; padding:0 0.5em; white-space:pre-wrap; }
+	</style>
+</head>
+<body>
+	<textarea id="sql" spellcheck="false" placeholder="Write some SQL here to test">SELECT * FROM mytable</textarea>
+	<table id="result"></table>
+	<script>
+		var timeout, last_value,
+			sql = document.getElementById("sql"),
+			result = document.getElementById("result");
+
+		function one_line(str) {
+			return str.replace(/\n/g, "\\n").replace(/\t/g, "\\t");
+		}
+		function tokenize() {
+			if (sql.value !== last_value) {
+				last_value = sql.value;
+				var i,
+					tokens = Sql_tokenize(last_value, {ignore:["whitespace"]}),
+					text = ["<tr><th>Index</th><th>Type</th><th>Value</th></tr>"];
+
+				if (tokens.length) {
+					for (i = 0; i < tokens.length; i++) {
+						text.push("<tr><td>"
+							+ tokens[i].start + "</td><td>"
+							+ tokens[i].type + "</td><td>"
+							+ one_line(tokens[i].value) + "</td></tr>");
+					}
+				} else {
+					text = ["<tr><td><i>No tokens</i></td></tr>"];
+				}
+				result.innerHTML = text.join("\n");
+				result.title = JSON.stringify(tokens);
+			}
+		}
+
+		sql.addEventListener("blur", tokenize, false);
+		sql.addEventListener("click", tokenize, false);
+		sql.addEventListener("focus", tokenize, false);
+		sql.addEventListener("change", tokenize, false);
+		sql.addEventListener("keyup", function () {
+			clearTimeout(timeout);
+			timeout = setTimeout(tokenize, 100);
+		}, false);
+		tokenize();
+	</script>
+</body>
+</html>

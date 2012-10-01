@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Fuzzy match</title>
+	<script src="fuzzy-match.js"></script>
+	<style>
+		html, body { height:100%; margin:0; padding:0; background:#eee; }
+		* {
+			-moz-box-sizing:border-box;
+			box-sizing:border-box;
+		}
+		#input, #result {
+			margin:0; float:left; max-width:50%; }
+		#input { width:50%; height:100%; }
+		#search { width:100%; }
+		#data { width:100%; height:50%; padding-bottom:3em solid transparent; margin-bottom:-3em; }
+		#debug { clear:both; }
+		td, th { text-align:left; padding:0.1em 0.5em; }
+		mark { color:HighlightText; background:Highlight; }
+		mark { color:inherit; background:#ddd; outline:1px solid #999; }
+	</style>
+</head>
+<body>
+	<div id="input">
+		<input id="search" placeholder="Search" />
+		<textarea id="data" spellcheck="false">ananas
+apelsin
+aprikos
+arbus
+aubergine
+avokado
+banan
+bergamott
+björnbär
+blodapelsin
+blåbär
+butternutpumpa
+cherimoya
+citron
+citrusfrukt
+fågelbär
+granatäpple
+gurka
+hallon
+hjortron
+jazz
+jordgubbe
+kalvbär
+kirimoja
+kivi
+kiwi
+kiwifrukt
+kokosnöt
+krusbär
+körsbär
+lime
+limon
+lingon
+mandarin
+melon
+minneola
+nypon
+odon
+oliv
+persika
+plommon
+päron
+rönnbär
+salmbär
+smultron
+stenbär
+stickelbär
+vattenmelon
+vildäpple
+äpple</textarea>
+</div>
+	<p id="time"></p>
+	<table id="result"></table>
+	<div id="debug"></div>
+	<script>
+		var timeout, last_value,
+			search = document.getElementById("search"),
+			data = document.getElementById("data"),
+			result = document.getElementById("result"),
+			debug = document.getElementById("debug"),
+			time = document.getElementById("time");
+		function mark(matches, hay) {
+			var i;
+			for (i = 0; i < matches.length; i++) {
+				hay[ matches[i][0] ] = "<mark>" + hay[ matches[i][0] ];
+				hay[ matches[i][1] - 1 ] += "</mark>";
+			}
+			return hay.join("");
+		}
+		function html_escape_to_array(str) {
+			var i, arr = (str+"").split("");
+			for (i = 0; i < arr.length; i++) {
+				if (arr[i] === "&") {
+					arr[i] = "&amp;";
+				} else if (arr[i] === "<") {
+					arr[i] = "&lt;";
+				}
+			}
+			return arr;
+		}
+		function tokenize() {
+			if (search.value !== last_value) {
+				var i, j, match, text, tmp,
+					search_val = search.value,
+					data_val = data.value.split("\n"),
+					html = ["<tr><th>Result</th><th>Score</th></tr>"];
+				last_value = search.value;
+
+				//tmp = +new Date;
+				//for (i=0; i<1000;i++) {
+					found = fuzzy_match(search_val, data_val);
+				//}
+				time.innerHTML = //"Took " + ((new Date - tmp)/1000) + " s<br>" + 
+						found.length + " matches";
+				debug.innerHTML = JSON.stringify(found);
+				for (i = 0; i < found.length; i++) {
+					match = found[i].match;
+					text = found[i].text;
+					text = mark(match, html_escape_to_array(text));
+
+					html.push("<tr><td>"
+						+ text + "</td><td>"
+						+ found[i].score + "</td></tr>");
+				}
+				console.log(html);
+				result.innerHTML = html.join("\n");
+			}
+		}
+		search.addEventListener("blur", tokenize, false);
+		search.addEventListener("click", tokenize, false);
+		search.addEventListener("focus", tokenize, false);
+		search.addEventListener("change", tokenize, false);
+		search.addEventListener("keyup", function () {
+			clearTimeout(timeout);
+			setTimeout(tokenize, 100);
+		}, false);
+		tokenize();
+	</script>
+</body>
+</html>
